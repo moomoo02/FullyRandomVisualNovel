@@ -1,25 +1,37 @@
-﻿# The script of the game goes in this file.
+﻿# Kirito and Bocchi's Visual Novel
+# Written by OpenAI Assistant
 
-# Declare characters used by this game. The color argument colorizes the
-# name of the character.
+# Declare the characters
+define s = Character('Kevin', color="#8888FF")
+define t = Character('JoJo', color="#FF8888")
 
-define e = Character("Eileen")
+# Set the background image
+image bg school = "bg classroom.png"
 
+# Declare the emotion images
+image t_happy = "zeil happy.png"
+image t_neutral = "zeil normal.png"
+image t_sad = "zeil sad.png"
+image t_smug = "zeil smug.png"
+image t_laugh = "zeil laugh.png"
 
-# The game starts here.
-
+# Start the novel
 label start:
-    scene bg classroom
-    "Rin Tohsaka is standing in the classroom, leaning against a tree and looking at her phone. She appears to be deep in thought, oblivious to the commotion around her."
-    show zeil angry
-    "Rin Tohsaka" "Ugh, I can't believe I have to put up with those arrogant pre-med students again. They think they're so much better than everyone else just because they're going to be doctors someday."
-    "The protagonist approaches, not noticing Rin at first.  He has a confident air about him, but there is a hint of sadness in his eyes."
-
-label sprites:
-    "Protagonist"  "Man, I can't wait to get out of this place. I was hoping to become a doctor, but it looks like I'm going to have to settle for something else. Still, I won't let that hold me back. I'll show everyone that I'm just as good as those pre-med snobs."
-    show zeil annoyed
-    "Rin notices the protagonist and scowls, crossing her arms over her chest."
-    "Rin Tohsaka" "What do you want, (protagonist's name)?"
-    "Protagonist" "Huh? Oh, it's you, Tohsaka. I didn't see you there."
-    "Rin Tohsaka" "Gee, what a surprise. You're always so focused on yourself, you never notice anyone else."
+    show bg school
+    show t_neutral
+    s "Hey, Jojo. What's up?"
+    show t_neutral
+    t "Nothing much, Kevin. Just trying to avoid people as usual."
+    s "Why do you always try to avoid people? You're such a tsundere."
+    show t_sad
+    t "I-I'm not a tsundere! I just don't like being around people, okay?"
+    s "Sure, sure. So, do you want to hang out after school today?"
+    show t_neutral
+    t "I don't know... I have a lot of homework to do."
+    s "Come on, JoJo. It'll be fun. We can go to the arcade or something."
+    show t_neutral
+    t "F-Fine. But just for a little while, okay?"
+    s "Great! I'll meet you at the entrance after school."
+    show t_neutral
+    t "O-Okay..."
     return
