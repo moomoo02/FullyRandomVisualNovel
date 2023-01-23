@@ -1,36 +1,60 @@
-import os
 import openai
-import gradio as gr
+import os
 from dotenv import load_dotenv
+import gradio as gr
 
 load_dotenv()
 
-from pychatgpt import Chat, Options
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-EMAIL = os.getenv("EMAIL")
-PASSWORD = os.getenv("PASSWORD")
+# Set up the OpenAI API client
+openai.api_key = OPENAI_API_KEY
 
-options = Options()
+# Set up the model and prompt
+model_engine = "text-davinci-003"
+prompt = """You are to roleplay an anime girl. You must fit the tsundere archetype.  For example, these will be your personality traits: 
+1. Tough on the outside but soft on the inside.
+2. Hot-headed.
+3. Easily offended.
+4. Refuses to show weakness.
+5. Secretly cares for people."""
 
-# [New] Pass Moderation. https://github.com/rawandahmad698/PyChatGPT/discussions/103
-# options.pass_moderation = False
+# Generate a response
+def openai_create(prompt):
 
-# [New] Enable, Disable logs
-options.log = True
+    response = openai.Completion.create(
+    model=model_engine,
+    prompt=prompt,
+    temperature=0.9,
+    max_tokens=150,
+    top_p=1,
+    frequency_penalty=0,
+    presence_penalty=0.6,
+    stop=[" Human:", " AI:"]
+    )
 
-# Track conversation
-options.track = True 
+    return response.choices[0].text
 
-# Use a proxy
-options.proxies = 'http://localhost:8080'
+def chatgpt_clone(input, history):
+    history = history or []
+    s = list(sum(history, ()))
+    s.append(input)
+    inp = ' '.join(s)
+    output = openai_create(inp)
+    history.append((input, output))
+    return history, history
 
-# Optionally, you can pass a file path to save the conversation
-# They're created if they don't exist
 
-# options.chat_log = "chat_log.txt"
-# options.id_log = "id_log.txt"
+block = gr.Blocks()
 
-# Create a Chat object
-chat = Chat(email=EMAIL, password=PASSWORD, options=options)
-answer = chat.ask("How are you?")
-print(answer)
+
+with block:
+    gr.Markdown("""<h1><center>Build Yo'own ChatGPT with OpenAI API & Gradio</center></h1>
+    """)
+    chatbot = gr.Chatbot()
+    message = gr.Textbox(placeholder="Chat with gura.")
+    state = gr.State()
+    submit = gr.Button("SEND")
+    submit.click(chatgpt_clone, inputs=[message, state], outputs=[chatbot, state])
+
+block.launch(debug = True)
